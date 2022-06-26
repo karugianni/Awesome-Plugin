@@ -100,4 +100,25 @@ class Awesome_Plugin_Public {
 
 	}
 
+   public function awesome_woo_add_endpoint() {
+		add_rewrite_endpoint( 'games', EP_ROOT | EP_PAGES );
+	}
+	
+   public function awesome_woo_query_vars( $vars ) {
+		$vars[] = 'games';
+		return $vars;
+	}  	
+
+   public function awesome_woo_add_link_my_account( $items ) {
+		$items['games'] = 'View Games Info';
+		return $items;
+	}
+	
+	// 4. Add content to the new endpoint  
+    public function awesome_woo_content() {
+	  
+		echo '<h3>View your chosen games</h3><p>This is a special section, to display games, based upon your account filters. If the filters are not chosen, then you see the results based on default filters.</p>';
+	
+	}  
+
 }

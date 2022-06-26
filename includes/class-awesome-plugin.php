@@ -179,7 +179,12 @@ class Awesome_Plugin {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		
-        
+		// add a custom section in woocommerce user
+
+		$this->loader->add_action( 'init', $plugin_public, 'awesome_woo_add_endpoint' );
+		$this->loader->add_filter( 'query_vars', $plugin_public, 'awesome_woo_query_vars', 0 );
+		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'awesome_woo_add_link_my_account' );
+        $this->loader->add_action( 'woocommerce_account_games_endpoint', $plugin_public, 'awesome_woo_content' );
 	}
 
 	/**
