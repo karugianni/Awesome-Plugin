@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Awesome Plugin
  * Plugin URI:        https://www.webfreelance.eu
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This is a plugin created for the developer test for Saucal
  * Version:           1.0.0
  * Author:            Konstantinos Kariyiannis
  * Author URI:        https://www.webfreelance.eu
