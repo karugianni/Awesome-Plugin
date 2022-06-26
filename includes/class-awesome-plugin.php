@@ -163,6 +163,14 @@ class Awesome_Plugin {
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'awesome_plugin_settings_add_plugin_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'awesome_plugin_settings_page_init' );
 	
+	//add custom user profile fields
+
+	$this->loader->add_action( 'show_user_profile', $plugin_admin, 'custom_user_profile_fields' );
+	$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'custom_user_profile_fields' );
+	//$this->loader->add_action( 'user_new_form', $plugin_admin, 'custom_user_profile_fields' );
+	$this->loader->add_action( 'personal_options_update', $plugin_admin, 'save_custom_user_profile_fields' );
+	$this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'save_custom_user_profile_fields' );
+
 	}
 
 	/**
@@ -179,12 +187,21 @@ class Awesome_Plugin {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		
+		
+		// add custom fields to user account on the frontend
+
+		$this->loader->add_action( 'woocommerce_edit_account_form', $plugin_public, 'add_fields_in_account_form' );
+		$this->loader->add_action( 'woocommerce_save_account_details', $plugin_public, 'save_account_details' );
+		
 		// add a custom section in woocommerce user
 
 		$this->loader->add_action( 'init', $plugin_public, 'awesome_woo_add_endpoint' );
 		$this->loader->add_filter( 'query_vars', $plugin_public, 'awesome_woo_query_vars', 0 );
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'awesome_woo_add_link_my_account' );
         $this->loader->add_action( 'woocommerce_account_games_endpoint', $plugin_public, 'awesome_woo_content' );
+	    
+		
+	
 	}
 
 	/**

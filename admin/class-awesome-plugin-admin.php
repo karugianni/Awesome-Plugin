@@ -184,4 +184,48 @@ class Awesome_Plugin_Admin {
  * $api_key_0 = $awesome_plugin_settings_options['api_key_0']; // Api Key 
  */
 
+public function custom_user_profile_fields($user){
+	if(is_object($user))
+	{
+		$platform = esc_attr( get_the_author_meta( 'platform', $user->ID ) );
+		$category = esc_attr( get_the_author_meta( 'category', $user->ID ) );
+	}
+	else
+	{
+		$platform = null;
+		$category = null;
+	}
+?>
+<h2>Game Filters<h2>
+
+<table class="form-table">
+ <tr>
+  <th><label for="platform"><?php _e("Game Platform"); ?></th>
+  <td><input type="text" class="regular-text" name="platform" value="<?php echo $platform;?>" id="platform" /><br/>
+    <span class="description"><?php _e("Please enter the platform of your choosing."); ?></span>
+  </td> 
+ </tr>
+ <tr>
+  <th><label for="category"><?php _e("Game Category"); ?></th>
+  <td><input type="text" class="regular-text" name="category" value="<?php echo $category;?>" id="category" /><br/>
+    <span class="description"><?php _e("Please enter the category of your choosing."); ?></span>
+  </td> 
+ </tr>
+</table>	
+
+<?php
+}
+
+public function save_custom_user_profile_fields($user_id){
+	// again do this only if you can
+	if(!current_user_can('manage_options'))
+	return false;
+	 
+	// save my custom field
+	update_user_meta($user_id, 'platform', $_POST['platform']);
+	update_user_meta($user_id, 'category', $_POST['category']);
+	
+}
+
+
 }

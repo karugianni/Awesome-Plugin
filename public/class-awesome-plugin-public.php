@@ -119,6 +119,38 @@ class Awesome_Plugin_Public {
 	  
 		echo '<h3>View your chosen games</h3><p>This is a special section, to display games, based upon your account filters. If the filters are not chosen, then you see the results based on default filters.</p>';
 	
-	}  
+	} 
+
+	public function add_fields_in_account_form() {
+		
+		woocommerce_form_field(
+          'platform',
+		  array (
+		  'type' => 'text',
+		  'required' => false,
+		  'label' => _e('Games Platform')	  
+		  ),
+		  get_user_meta( get_current_user_id(), 'platform', true )
+		);
+
+		woocommerce_form_field(
+			'category',
+			array (
+			'type' => 'text',
+			'required' => false,
+			'label' => _e('Games Category')	  
+			),
+			get_user_meta( get_current_user_id(), 'category', true )
+		  );
+
+	}
+
+	public function save_account_details( $user_id ) {
+		
+		update_user_meta( $user_id, 'platform', wc_clean( $_POST[ 'platform' ] ) );
+        update_user_meta( $user_id, 'category', wc_clean( $_POST[ 'category' ] ) );
+	
+	}
+			
 
 }
