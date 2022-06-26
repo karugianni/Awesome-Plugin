@@ -47,12 +47,14 @@ class Awesome_Plugin_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
+
+	//private $awesome_plugin_settings_options;  
+	
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
-	}
+  }
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -99,5 +101,87 @@ class Awesome_Plugin_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/awesome-plugin-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+    public function awesome_plugin_settings_add_plugin_page() {
+		add_menu_page(
+			'Awesome Plugin Settings', // page_title
+			'Awesome Plugin Settings', // menu_title
+			'manage_options', // capability
+			'awesome-plugin-settings', // menu_slug
+			array( $this, 'awesome_plugin_settings_create_admin_page' ), // function
+			'dashicons-schedule', // icon_url
+			80 // position
+		);
+	}
+
+	public function awesome_plugin_settings_create_admin_page() {
+		$this->awesome_plugin_settings_options = get_option( 'awesome_plugin_settings_option_name' ); ?>
+
+		<div class="wrap">
+			<h2>Awesome Plugin Settings</h2>
+			<p>Set Api Key, to get your users to display random information about games.</p>
+			<p>The Api we are hooking to is this: <a href="https://rapidapi.com/digiwalls/api/free-to-play-games-database/" target="_blank">RapidApi Free-to-Play Games Database </a> </p>
+			<p>For Demonstration Purposes, we are using the key : <b>347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc</b></p>
+			<?php settings_errors(); ?>
+
+			<form method="post" action="options.php">
+				<?php
+					settings_fields( 'awesome_plugin_settings_option_group' );
+					do_settings_sections( 'awesome-plugin-settings-admin' );
+					submit_button();
+				?>
+			</form>
+		</div>
+	<?php }
+
+	public function awesome_plugin_settings_page_init() {
+		register_setting(
+			'awesome_plugin_settings_option_group', // option_group
+			'awesome_plugin_settings_option_name', // option_name
+			array( $this, 'awesome_plugin_settings_sanitize' ) // sanitize_callback
+		);
+
+		add_settings_section(
+			'awesome_plugin_settings_setting_section', // id
+			'Settings', // title
+			array( $this, 'awesome_plugin_settings_section_info' ), // callback
+			'awesome-plugin-settings-admin' // page
+		);
+
+		add_settings_field(
+			'api_key_0', // id
+			'Api Key ', // title
+			array( $this, 'api_key_0_callback' ), // callback
+			'awesome-plugin-settings-admin', // page
+			'awesome_plugin_settings_setting_section' // section
+		);
+	}
+
+	public function awesome_plugin_settings_sanitize($input) {
+		$sanitary_values = array();
+		if ( isset( $input['api_key_0'] ) ) {
+			$sanitary_values['api_key_0'] = sanitize_text_field( $input['api_key_0'] );
+		}
+
+		return $sanitary_values;
+	}
+
+	public function awesome_plugin_settings_section_info() {
+		
+	}
+
+	public function api_key_0_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="awesome_plugin_settings_option_name[api_key_0]" id="api_key_0" value="%s">',
+			isset( $this->awesome_plugin_settings_options['api_key_0'] ) ? esc_attr( $this->awesome_plugin_settings_options['api_key_0']) : ''
+		);
+	}
+
+
+/* 
+ * Retrieve this value with:
+ * $awesome_plugin_settings_options = get_option( 'awesome_plugin_settings_option_name' ); // Array of All Options
+ * $api_key_0 = $awesome_plugin_settings_options['api_key_0']; // Api Key 
+ */
 
 }

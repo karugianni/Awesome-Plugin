@@ -66,6 +66,9 @@ class Awesome_Plugin {
 	 *
 	 * @since    1.0.0
 	 */
+    
+	
+
 	public function __construct() {
 		if ( defined( 'AWESOME_PLUGIN_VERSION' ) ) {
 			$this->version = AWESOME_PLUGIN_VERSION;
@@ -78,8 +81,8 @@ class Awesome_Plugin {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-	}
+	
+      }
 
 	/**
 	 * Load the required dependencies for this plugin.
@@ -142,6 +145,7 @@ class Awesome_Plugin {
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
+    
 
 	/**
 	 * Register all of the hooks related to the admin area functionality
@@ -156,7 +160,9 @@ class Awesome_Plugin {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+        $this->loader->add_action( 'admin_menu', $plugin_admin, 'awesome_plugin_settings_add_plugin_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'awesome_plugin_settings_page_init' );
+	
 	}
 
 	/**
@@ -172,7 +178,8 @@ class Awesome_Plugin {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		
+        
 	}
 
 	/**
@@ -214,5 +221,4 @@ class Awesome_Plugin {
 	public function get_version() {
 		return $this->version;
 	}
-
-}
+     }
