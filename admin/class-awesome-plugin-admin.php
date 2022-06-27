@@ -121,7 +121,7 @@ class Awesome_Plugin_Admin {
 			<h2>Awesome Plugin Settings</h2>
 			<p>Set Api Key, to get your users to display random information about games.</p>
 			<p>The Api we are hooking to is this: <a href="https://rapidapi.com/digiwalls/api/free-to-play-games-database/" target="_blank">RapidApi Free-to-Play Games Database </a> </p>
-			<p>For Demonstration Purposes, we are using the key : <b>347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc</b></p>
+			
 			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
