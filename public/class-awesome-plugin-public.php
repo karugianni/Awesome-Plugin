@@ -118,7 +118,7 @@ class Awesome_Plugin_Public {
     public function awesome_woo_content() {
 	  
 		echo '<h3>View your chosen games</h3><p>This is a special section, to display games, based upon your account filters. If the filters are not chosen, then you see the results based on default filters.</p>';
-	
+	    echo do_shortcode( '[games_query_call]' );
 	} 
 
 	public function add_fields_in_account_form() {
@@ -151,6 +151,62 @@ class Awesome_Plugin_Public {
         update_user_meta( $user_id, 'category', wc_clean( $_POST[ 'category' ] ) );
 	
 	}
+
+ 
+    public function register_shortcodes(){
+ 
+        add_shortcode( 'games_query_call','show_games_shortcode'  );
+        
+		function show_games_shortcode () {
+       
+			$current_user_id = get_current_user_id();
+			$apikey = '347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc';
+	
+			if ( $current_user_id ) {
+			  $platform = get_user_meta( $current_user_id, 'platform', true );
+			  $category = get_user_meta( $current_user_id, 'category', true );	
+			  
+			  
+			 //actual call
+             
+			   $curl = curl_init();
+		
+		      curl_setopt_array($curl, [
+			CURLOPT_URL => "https://free-to-play-games-database.p.rapidapi.com/api/games?platform=".$platform."&category=".$category,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_SSL_VERIFYHOST => false, //for testing in localhost, if set to false - security risk, never on production
+			CURLOPT_SSL_VERIFYPEER => false, //for testing in localhost, if set to false - security risk, never on production
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => [
+				"X-RapidAPI-Host: free-to-play-games-database.p.rapidapi.com",
+				"X-RapidAPI-Key: ".$apikey
+			],
+		]);
+		
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		
+		curl_close($curl);
+		
+		if ($err) {
+			return "cURL Error #:" . $err;
+		} else {
+		    return $response;
+		}  
+
 			
+			}  else {
+			  echo	'Please login and insert your choices to view your games';
+			}
+		  
+		  }
+    }
+	
+	
 
 }

@@ -81,8 +81,12 @@ class Awesome_Plugin {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-	
+	    
+		 
+		
       }
+       
+	 
 
 	/**
 	 * Load the required dependencies for this plugin.
@@ -170,6 +174,8 @@ class Awesome_Plugin {
 	//$this->loader->add_action( 'user_new_form', $plugin_admin, 'custom_user_profile_fields' );
 	$this->loader->add_action( 'personal_options_update', $plugin_admin, 'save_custom_user_profile_fields' );
 	$this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'save_custom_user_profile_fields' );
+    
+	
 
 	}
 
@@ -200,7 +206,8 @@ class Awesome_Plugin {
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'awesome_woo_add_link_my_account' );
         $this->loader->add_action( 'woocommerce_account_games_endpoint', $plugin_public, 'awesome_woo_content' );
 	    
-		
+		// shortcodes
+		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 	
 	}
 
