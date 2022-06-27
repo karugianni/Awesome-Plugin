@@ -208,7 +208,9 @@ class Awesome_Plugin {
 	    
 		// shortcodes
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
-	
+	    
+		//add shortcode capability in widgets
+		$this->loader->add_filter( 'widget_text', $plugin_public, 'do_shortcode' );
 	}
 
 	/**

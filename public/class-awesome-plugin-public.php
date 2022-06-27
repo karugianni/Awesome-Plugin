@@ -117,7 +117,7 @@ class Awesome_Plugin_Public {
 	// 4. Add content to the new endpoint  
     public function awesome_woo_content() {
 	  
-		echo '<h3>View your chosen games</h3><p>This is a special section, to display games, based upon your account filters. If the filters are not chosen, then you see the results based on default filters.</p>';
+		echo '<h3>View your chosen games</h3><p>This is a special section, to display games, based upon your account filters. If the filters are blank, then you will see no games.</p>';
 	    echo do_shortcode( '[games_query_call]' );
 	} 
 
@@ -160,18 +160,19 @@ class Awesome_Plugin_Public {
 		function show_games_shortcode () {
        
 			$current_user_id = get_current_user_id();
-			$apikey = '347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc';
+           
+			$platform = get_user_meta( $current_user_id, 'platform', true );
+			$category = get_user_meta( $current_user_id, 'category', true );
+
+			$awesome_plugin_settings_options = get_option( 'awesome_plugin_settings_option_name' ); // Array of All Options
+            $apikey = $awesome_plugin_settings_options['api_key_0']; // Api Key 
+			//$apikey = '347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc';
 	
-			if ( $current_user_id ) {
-			  $platform = get_user_meta( $current_user_id, 'platform', true );
-			  $category = get_user_meta( $current_user_id, 'category', true );	
-			  
-			  
-			 //actual call
+			if ($apikey != '' && $platform != '' && $category != '' ) {
              
 			   $curl = curl_init();
 		
-		      curl_setopt_array($curl, [
+		       curl_setopt_array($curl, [
 			CURLOPT_URL => "https://free-to-play-games-database.p.rapidapi.com/api/games?platform=".$platform."&category=".$category,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => true,
@@ -188,15 +189,27 @@ class Awesome_Plugin_Public {
 			],
 		]);
 		
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
+		   $response = curl_exec($curl);
+		   $err = curl_error($curl);
 		
-		curl_close($curl);
+		   curl_close($curl);
 		
-		if ($err) {
-			return "cURL Error #:" . $err;
-		} else {
-		    return $response;
+		   if ($err) {
+			 return "cURL Error #:" . $err;
+		   } else {
+		    
+			$jsonObj = json_decode($response);
+			$htmlResults = '';
+			//TO DO : add pagination via shortcode attributes and probably a limit.
+			foreach($jsonObj as $result) {
+			   $htmlResults .= '<div class="game-div game-id-'.$result->id.'">';
+			   $htmlResults .= '<h4>'.$result->title.'</h4>';
+			   $htmlResults .= '<p>'.$result->short_description.'</p>';
+			   $htmlResults .= '<a class="button" href="'.$result->game_url.'" target="_blank">View game Info</a>';
+			   $htmlResults .= '</div>'; 	
+			}
+
+			return $htmlResults;
 		}  
 
 			

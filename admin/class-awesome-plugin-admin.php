@@ -177,14 +177,7 @@ class Awesome_Plugin_Admin {
 		);
 	}
 
-
-/* 
- * Retrieve this value with:
- * $awesome_plugin_settings_options = get_option( 'awesome_plugin_settings_option_name' ); // Array of All Options
- * $api_key_0 = $awesome_plugin_settings_options['api_key_0']; // Api Key 
- */
-
-public function custom_user_profile_fields($user){
+   public function custom_user_profile_fields($user){
 	if(is_object($user))
 	{
 		$platform = esc_attr( get_the_author_meta( 'platform', $user->ID ) );
