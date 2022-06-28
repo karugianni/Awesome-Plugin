@@ -166,7 +166,7 @@ class Awesome_Plugin_Public {
 
 			$awesome_plugin_settings_options = get_option( 'awesome_plugin_settings_option_name' ); // Array of All Options
             $apikey = $awesome_plugin_settings_options['api_key_0']; // Api Key 
-			//$apikey = '347f2b29e8mshd562d3f6589dcd4p1e5afdjsn2817b49a2bdc';
+			
 	
 			if ($apikey != '' && $platform != '' && $category != '' ) {
              
