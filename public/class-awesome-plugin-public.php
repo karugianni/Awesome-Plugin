@@ -176,8 +176,8 @@ class Awesome_Plugin_Public {
 			CURLOPT_URL => "https://free-to-play-games-database.p.rapidapi.com/api/games?platform=".$platform."&category=".$category,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_SSL_VERIFYHOST => false, //for testing in localhost, if set to false - security risk, never on production
-			CURLOPT_SSL_VERIFYPEER => false, //for testing in localhost, if set to false - security risk, never on production
+			//CURLOPT_SSL_VERIFYHOST => false, //for testing in localhost, if set to false - security risk, never on production
+			//CURLOPT_SSL_VERIFYPEER => false, //for testing in localhost, if set to false - security risk, never on production
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
 			CURLOPT_TIMEOUT => 30,
